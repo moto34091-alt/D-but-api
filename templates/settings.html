@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Settings</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+}
+.card {
+    background: #1e293b;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+}
+input {
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+}
+button {
+    padding: 10px;
+    margin-top: 10px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>⚙️ Paramètres</h2>
+
+    <p>👤 Utilisateur : {{ user }}</p>
+
+    <hr>
+
+    <h3>🔐 Sécurité</h3>
+    <p>Changer mot de passe (prochain upgrade)</p>
+
+    <hr>
+
+    <h3>📊 Statistiques</h3>
+    <p>Ton compte est actif</p>
+
+    <hr>
+
+    <a href="/dashboard">⬅ Retour dashboard</a>
+</div>
+
+</body>
+</html>
