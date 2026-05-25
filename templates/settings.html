@@ -1,56 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-<title>Settings</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TikTok Creator - Paramètres</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body {
-    font-family: Arial;
-    background: #0f172a;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0b1220;
     color: white;
 }
+
+/* HEADER */
+.header {
+    background: #111a2e;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+/* CONTAINER */
+.container {
+    padding: 15px;
+}
+
+/* CARD */
 .card {
-    background: #1e293b;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 12px;
+    background: #111a2e;
+    padding: 15px;
+    border-radius: 14px;
+    margin-bottom: 12px;
 }
-input {
-    padding: 10px;
-    width: 100%;
-    margin-top: 10px;
+
+/* PROFILE */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#3b82f6,#22c55e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* BUTTON */
 button {
-    padding: 10px;
-    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 10px;
     background: #3b82f6;
     color: white;
-    border: none;
-    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button.red { background:#ef4444; }
+button.green { background:#22c55e; }
+button.gray { background:#374151; }
+
+a {
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <h2>⚙️ Paramètres</h2>
+<div class="header">🎬 TikTok Creator</div>
 
-    <p>👤 Utilisateur : {{ user }}</p>
+<div class="container">
 
-    <hr>
+    <!-- PROFILE -->
+    <div class="card profile">
+        <div class="avatar">{{ user[0]|upper }}</div>
+        <div>
+            <div style="font-weight:700;">{{ user }}</div>
+            <div style="opacity:0.7;font-size:13px;">👤 Compte utilisateur</div>
+        </div>
+    </div>
 
-    <h3>🔐 Sécurité</h3>
-    <p>Changer mot de passe (prochain upgrade)</p>
+    <!-- PARAMÈTRES -->
+    <div class="card">
+        <h3>⚙️ Paramètres du compte</h3>
 
-    <hr>
+        <button>👤 Photo de profil</button>
+        <button>🔗 Parrainage / Inviter amis</button>
+        <button>💾 Sauvegarder le compte</button>
+        <button class="gray">🔑 Mot de passe oublié</button>
 
-    <h3>📊 Statistiques</h3>
-    <p>Ton compte est actif</p>
+        <button class="green">🔵 S’inscrire avec Google</button>
 
-    <hr>
+        <a href="/invite">👉 Lien de parrainage</a>
+    </div>
 
-    <a href="/dashboard">⬅ Retour dashboard</a>
+    <!-- ACTIONS -->
+    <div class="card">
+        <h3>🚪 Actions</h3>
+
+        <a href="/dashboard">🏠 Dashboard</a><br>
+        <a href="/logout" style="color:red;">Déconnexion</a>
+    </div>
+
 </div>
 
 </body>
