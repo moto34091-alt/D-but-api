@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, session, jsonify
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "tiktok_creator_secret"
+app.secret_key = "tiktok_creator_secret_key"
 
 DB = "users.db"
 
@@ -28,7 +28,7 @@ def init_db():
 init_db()
 
 # -------------------------
-# USERS
+# DB HELPERS
 # -------------------------
 def create_user(username, password):
     conn = sqlite3.connect(DB)
@@ -68,39 +68,39 @@ def add_referral(username):
 
 
 # -------------------------
-# IA GRATUITE
+# IA SIMPLE (FREE)
 # -------------------------
-def generate(prompt):
+def generate(type):
 
     ideas = [
-        "🎬 Vidéo transformation avant/après",
+        "🎬 Transformation incroyable",
         "😂 Situation drôle du quotidien",
-        "🔥 Astuce inconnue à 99%",
-        "📱 Top applications utiles",
+        "🔥 Astuce secrète inconnue",
+        "📱 Application utile",
         "💡 Erreur que tout le monde fait",
         "🚀 Challenge viral TikTok",
-        "😱 Histoire choquante courte",
+        "😱 Histoire choquante",
         "💰 Astuce pour gagner de l'argent"
     ]
 
     scripts = [
-        "HOOK: Attends stop !\nCONTENU: Voici une erreur...\nFIN: Abonne-toi 🔥",
+        "HOOK: Attends stop !\nCONTENU: Voici un secret...\nFIN: Abonne-toi 🔥",
         "HOOK: Personne ne te dit ça...\nCONTENU: Voilà la vérité...\nFIN: Partage ça",
-        "HOOK: Tu veux devenir viral ?\nCONTENU: Fais ces 3 étapes...\nFIN: Essaie aujourd'hui"
+        "HOOK: Tu veux devenir viral ?\nCONTENU: Fais ça...\nFIN: Essaie maintenant"
     ]
 
     titles = [
-        "🔥 Tu dois voir ça absolument",
+        "🔥 Tu dois voir ça",
         "😱 Personne ne t’a dit ça",
         "🚀 Le secret viral",
         "💡 Astuce incroyable",
         "😂 Tu vas rire après ça"
     ]
 
-    if "script" in prompt:
+    if type == "script":
         return scripts[0]
 
-    if "title" in prompt or "titre" in prompt:
+    if type == "title":
         return "\n".join(titles[:3])
 
     return ideas[0]
@@ -169,7 +169,7 @@ def settings():
 
 
 # -------------------------
-# INVITE / VIRAL SYSTEM
+# INVITE SYSTEM
 # -------------------------
 @app.route("/invite")
 def invite():
@@ -177,16 +177,15 @@ def invite():
         return redirect("/")
 
     username = session["user"]
-
     add_referral(username)
 
     return f"""
-    🎉 Lien de parrainage :
+🎉 Lien de parrainage :
 
-    👉 https://tiktokcreator.up.railway.app/register?ref={username}
+👉 https://tiktokcreator.up.railway.app/register?ref={username}
 
-    🔥 Partage et gagne des utilisateurs !
-    """
+🔥 Partage pour gagner des utilisateurs !
+"""
 
 
 # -------------------------
@@ -205,6 +204,31 @@ def script():
 @app.route("/title", methods=["POST"])
 def title():
     return jsonify({"result": generate("title")})
+
+
+# -------------------------
+# 10 POSTS VIRALS
+# -------------------------
+@app.route("/viral_10", methods=["POST"])
+def viral_10():
+
+    posts = []
+
+    for i in range(10):
+        post = f"""
+🎬 POST {i+1}
+
+💡 IDÉE: {generate("idea")}
+
+🎥 SCRIPT: {generate("script")}
+
+🔥 TITRE: {generate("title")}
+
+#fyp #viral #tiktok
+"""
+        posts.append(post)
+
+    return jsonify({"result": "\n\n-----------------\n\n".join(posts)})
 
 
 # -------------------------
