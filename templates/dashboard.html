@@ -2,9 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Viral AI Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font -->
+<title>Viral AI</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -15,47 +16,47 @@ body {
     color: white;
 }
 
-/* TOP BAR */
+/* TOP BAR MOBILE */
 .topbar {
+    position: sticky;
+    top: 0;
     background: #111a2e;
-    padding: 15px 25px;
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .logo {
+    font-size: 16px;
     font-weight: 700;
-    font-size: 18px;
     color: #60a5fa;
 }
 
 /* CONTAINER */
 .container {
-    padding: 25px;
-    max-width: 900px;
-    margin: auto;
+    padding: 15px;
 }
 
-/* CARDS */
+/* CARD */
 .card {
     background: #111a2e;
-    padding: 20px;
+    padding: 15px;
     border-radius: 14px;
-    margin-bottom: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    margin-bottom: 12px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
 }
 
 /* PROFILE */
 .profile {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .avatar {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     background: linear-gradient(135deg, #3b82f6, #22c55e);
     display: flex;
@@ -64,33 +65,29 @@ body {
     font-weight: bold;
 }
 
-/* BUTTONS */
+/* BUTTONS MOBILE (GROS BOUTONS) */
 button {
-    padding: 10px 14px;
+    width: 100%;
+    padding: 14px;
     border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-right: 8px;
+    border-radius: 12px;
+    margin-top: 8px;
+    font-size: 15px;
     font-weight: 600;
-    transition: 0.2s;
-}
-
-button:hover {
-    transform: scale(1.05);
+    cursor: pointer;
 }
 
 .blue { background: #3b82f6; color: white; }
 .green { background: #22c55e; color: white; }
 .purple { background: #a855f7; color: white; }
-.red { background: #ef4444; color: white; }
 
 /* OUTPUT */
 .output {
     background: #0b1220;
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     min-height: 80px;
-    margin-top: 10px;
+    font-size: 14px;
     white-space: pre-line;
 }
 
@@ -98,66 +95,81 @@ button:hover {
 a {
     color: #60a5fa;
     text-decoration: none;
+    font-size: 14px;
 }
-a:hover {
-    text-decoration: underline;
+
+/* MENU BOTTOM MOBILE STYLE */
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #111a2e;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #1f2a44;
+}
+
+.bottom-menu a {
+    color: white;
+    font-size: 13px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP BAR -->
+<!-- TOP -->
 <div class="topbar">
-    <div class="logo">🚀 Viral AI Studio</div>
-    <div>
-        <a href="/settings">⚙️</a> |
-        <a href="/invite">🔥</a> |
-        <a href="/logout">Logout</a>
-    </div>
+    <div class="logo">🚀 Viral AI</div>
+    <div>👤 {{ user }}</div>
 </div>
 
-<!-- CONTENT -->
 <div class="container">
 
     <!-- PROFILE -->
     <div class="card profile">
         <div class="avatar">{{ user[0]|upper }}</div>
         <div>
-            <h2 style="margin:0;">{{ user }}</h2>
-            <p style="opacity:0.7;">👥 Referrals : {{ referrals }}</p>
+            <div style="font-weight:700;">{{ user }}</div>
+            <div style="opacity:0.7;font-size:13px;">👥 Referrals: {{ referrals }}</div>
         </div>
     </div>
 
     <!-- ACTIONS -->
     <div class="card">
-        <h3>🚀 Créer du contenu viral</h3>
+        <div style="font-weight:700;margin-bottom:10px;">🚀 Générer du contenu</div>
 
-        <button class="blue" onclick="callAPI('/idea')">Idée</button>
-        <button class="green" onclick="callAPI('/script')">Script</button>
-        <button class="purple" onclick="callAPI('/title')">Titre</button>
+        <button class="blue" onclick="callAPI('/idea')">💡 Idée</button>
+        <button class="green" onclick="callAPI('/script')">🎬 Script</button>
+        <button class="purple" onclick="callAPI('/title')">🔥 Titre</button>
     </div>
 
     <!-- OUTPUT -->
     <div class="card">
-        <h3>📊 Résultat IA</h3>
-        <div id="out" class="output">Clique un bouton pour générer...</div>
+        <div style="font-weight:700;">📊 Résultat</div>
+        <div id="out" class="output">Clique un bouton 👇</div>
     </div>
 
+</div>
+
+<!-- BOTTOM MENU -->
+<div class="bottom-menu">
+    <a href="/dashboard">🏠 Home</a>
+    <a href="/invite">🔥 Invite</a>
+    <a href="/settings">⚙️ Settings</a>
+    <a href="/logout">🚪 Exit</a>
 </div>
 
 <script>
 async function callAPI(url){
     document.getElementById("out").innerText = "⏳ Génération..."
 
-    try {
-        let res = await fetch(url, {method:"POST"})
-        let data = await res.json()
+    let res = await fetch(url, {method:"POST"})
+    let data = await res.json()
 
-        document.getElementById("out").innerText = data.result
-    } catch (e) {
-        document.getElementById("out").innerText = "❌ Erreur serveur"
-    }
+    document.getElementById("out").innerText = data.result
 }
 </script>
 
