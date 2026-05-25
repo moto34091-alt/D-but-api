@@ -1,21 +1,97 @@
-<h1>Bienvenue {{ user }}</h1>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
 
-<button onclick="call('/idea')">Idée</button>
-<button onclick="call('/script')">Script</button>
-<button onclick="call('/title')">Titre</button>
-
-<p id="out">Résultat ici...</p>
-
-<br>
-<a href="/logout">Logout</a>
-
-<script>
-async function call(url){
-    document.getElementById("out").innerText = "Chargement..."
-
-    let res = await fetch(url,{method:"POST"})
-    let data = await res.json()
-
-    document.getElementById("out").innerText = data.result
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    margin: 0;
 }
-</script>
+
+.container {
+    padding: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.primary { background: #3b82f6; color: white; }
+.green { background: #22c55e; color: white; }
+.red { background: #ef4444; color: white; }
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background: #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PROFILE -->
+    <div class="card profile">
+        <div class="avatar">{{ user[0]|upper }}</div>
+        <div>
+            <h3>{{ user }}</h3>
+            <p>👥 Referrals: {{ referrals }}</p>
+        </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="card">
+        <h3>🚀 Actions</h3>
+
+        <button class="primary">Idée</button>
+        <button class="green">Script</button>
+        <button class="red">Titre</button>
+    </div>
+
+    <!-- VIRAL -->
+    <div class="card">
+        <h3>🔥 Système viral</h3>
+        <a href="/invite">
+            <button class="primary">Générer lien de partage</button>
+        </a>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+        <h3>📊 Résultat</h3>
+        <p id="out">Clique un bouton</p>
+    </div>
+
+    <a href="/logout" style="color:red;">Logout</a>
+
+</div>
+
+</body>
+</html>
