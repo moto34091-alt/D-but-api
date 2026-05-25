@@ -1,19 +1,15 @@
 from flask import Flask, request, render_template, redirect, session, jsonify
-import os
 import sqlite3
-from openai import OpenAI
+import random
 
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-# 🔑 OpenAI
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# -------------------------
-# 🧠 DATABASE FUNCTIONS
-# -------------------------
 DB_NAME = "users.db"
 
+# -------------------------
+# 🧠 DATABASE
+# -------------------------
 def init_db():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
@@ -22,8 +18,7 @@ def init_db():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE,
-        password TEXT,
-        premium INTEGER DEFAULT 0
+        password TEXT
     )
     """)
 
@@ -57,30 +52,43 @@ def get_user(username, password):
     return user
 
 
-def is_premium(username):
-    conn = sqlite3.connect(DB_NAME)
-    c = conn.cursor()
-
-    c.execute("SELECT premium FROM users WHERE username=?", (username,))
-    user = c.fetchone()
-
-    conn.close()
-
-    return user and user[0] == 1
-
-
 # -------------------------
-# 🤖 IA FUNCTION
+# 🤖 IA GRATUITE (SIMULÉE)
 # -------------------------
 def generate(prompt):
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Tu es expert en contenu viral TikTok."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response.choices[0].message.content
+
+    ideas = [
+        "🎬 Fais une vidéo avant/après transformation",
+        "😂 Situation drôle du quotidien",
+        "🔥 Astuce inconnue que personne ne partage",
+        "📱 Top 3 applications utiles",
+        "🚀 Défi viral à lancer aujourd’hui",
+        "💡 Erreur que tout le monde fait sur TikTok",
+        "😱 Histoire choquante courte",
+        "💰 Astuce pour gagner de l’argent en ligne"
+    ]
+
+    scripts = [
+        "Hook: Attends, tu fais encore ça ?\nContenu: Voici pourquoi c’est une erreur...\nFin: Abonne-toi pour plus.",
+        "Hook: Personne ne parle de ça...\nContenu: Voici la vérité...\nFin: Partage si tu ne savais pas.",
+        "Hook: Tu veux devenir viral ?\nContenu: Fais ça en 3 étapes simples...\nFin: Essaie aujourd’hui."
+    ]
+
+    titles = [
+        "🔥 Tu dois absolument voir ça",
+        "😱 Personne ne t’a dit ça",
+        "🚀 Le secret des vidéos virales",
+        "💡 Astuce incroyable TikTok",
+        "😂 Tu vas rire après ça"
+    ]
+
+    if "script" in prompt.lower():
+        return random.choice(scripts)
+
+    if "titre" in prompt.lower() or "title" in prompt.lower():
+        return "\n".join(random.sample(titles, 3))
+
+    return random.choice(ideas)
 
 
 # -------------------------
@@ -130,30 +138,21 @@ def dashboard():
 
 
 # -------------------------
-# 🤖 IA ROUTES (FIXED)
+# 🤖 API
 # -------------------------
 @app.route("/idea", methods=["POST"])
 def idea():
-    try:
-        return jsonify({"result": generate("Donne une idée TikTok virale.")})
-    except:
-        return jsonify({"result": "❌ Erreur IA"})
+    return jsonify({"result": generate("idea")})
 
 
 @app.route("/script", methods=["POST"])
 def script():
-    try:
-        return jsonify({"result": generate("Écris un script TikTok viral.")})
-    except:
-        return jsonify({"result": "❌ Erreur IA"})
+    return jsonify({"result": generate("script")})
 
 
 @app.route("/title", methods=["POST"])
 def title():
-    try:
-        return jsonify({"result": generate("Donne 5 titres TikTok viraux.")})
-    except:
-        return jsonify({"result": "❌ Erreur IA"})
+    return jsonify({"result": generate("title")})
 
 
 # -------------------------
@@ -166,7 +165,7 @@ def logout():
 
 
 # -------------------------
-# 🚀 RUN APP
+# 🚀 RUN
 # -------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
