@@ -1,7 +1,10 @@
 import sqlite3
 
+DB_NAME = "users.db"
+
+
 def init_db():
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
 
     c.execute("""
@@ -16,8 +19,9 @@ def init_db():
     conn.commit()
     conn.close()
 
+
 def create_user(username, password):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
 
     try:
@@ -28,8 +32,9 @@ def create_user(username, password):
 
     conn.close()
 
+
 def get_user(username, password):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
 
     c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
@@ -38,8 +43,9 @@ def get_user(username, password):
     conn.close()
     return user
 
+
 def is_premium(username):
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
 
     c.execute("SELECT premium FROM users WHERE username=?", (username,))
