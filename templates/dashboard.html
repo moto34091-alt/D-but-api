@@ -1,30 +1,30 @@
 <h1>Bienvenue {{ user }}</h1>
 
-<button onclick="getIdea()">Idea</button>
-<button onclick="getScript()">Script</button>
-<button onclick="getTitle()">Title</button>
+<button onclick="idea()">Idée</button>
+<button onclick="script()">Script</button>
+<button onclick="title()">Titre</button>
 
 <p id="out"></p>
 
+<br>
+<a href="/logout">Logout</a>
+
 <script>
-async function getIdea(){
+async function idea(){
 let r = await fetch("/idea",{method:"POST"})
 let d = await r.json()
 document.getElementById("out").innerText = d.result
 }
 
-async function getScript(){
+async function script(){
 let r = await fetch("/script",{method:"POST"})
 let d = await r.json()
 document.getElementById("out").innerText = d.result
 }
 
-async function getTitle(){
+async function title(){
 let r = await fetch("/title",{method:"POST"})
 let d = await r.json()
 document.getElementById("out").innerText = d.result
 }
 </script>
-
-<br>
-<a href="/logout">Logout</a>
