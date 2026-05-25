@@ -1,9 +1,101 @@
-<h2>Login</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<form method="POST">
-<input name="username" placeholder="Username"><br><br>
-<input name="password" type="password" placeholder="Password"><br><br>
-<button>Login</button>
-</form>
+<title>TikTok Creator - Login</title>
 
-<a href="/register">Créer compte</a>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0b1220, #111a2e);
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 90%;
+    max-width: 380px;
+    background: #111a2e;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 5px;
+    color: #60a5fa;
+}
+
+p {
+    text-align: center;
+    opacity: 0.7;
+    font-size: 13px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: #0b1220;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #60a5fa;
+    text-decoration: none;
+    font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>🎬 TikTok Creator</h1>
+    <p>Connexion à ton espace créateur</p>
+
+    <form method="POST">
+        <input name="username" placeholder="Nom d'utilisateur" required>
+        <input name="password" type="password" placeholder="Mot de passe" required>
+
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <a href="/register">Créer un compte</a>
+
+</div>
+
+</body>
+</html>
