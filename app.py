@@ -4,13 +4,14 @@ from openai import OpenAI
 import db
 
 app = Flask(__name__)
-app.secret_key = "secret123"
+app.secret_key = "supersecretkey"
 
 db.init_db()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
+# 🤖 IA FUNCTION
 def generate(prompt):
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -26,15 +27,16 @@ def generate(prompt):
 @app.route("/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
         user = db.get_user(username, password)
 
         if user:
             session["user"] = username
             return redirect("/dashboard")
-        return "❌ Login incorrect"
+        else:
+            return "❌ Login incorrect"
 
     return render_template("login.html")
 
@@ -43,8 +45,8 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
         db.create_user(username, password)
         return redirect("/")
@@ -61,7 +63,7 @@ def dashboard():
     return render_template("dashboard.html", user=session["user"])
 
 
-# 🤖 API IA
+# 🤖 IA ROUTES
 @app.route("/idea", methods=["POST"])
 def idea():
     return jsonify({"result": generate("Donne une idée TikTok virale.")})
